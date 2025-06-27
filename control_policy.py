@@ -44,4 +44,28 @@ class ChlorinationControlPolicyRandom(ChlorinationControlPolicy):
     Random control policy -- picks a random control action in every time step.
     """
     def compute_action(self, observations: np.ndarray) -> np.ndarray:
-        return self._gym_action_space.sample()
+        action = self._gym_action_space.sample()
+        #print(self._gym_action_space)
+        #print(f"Random action: {action}")
+        return action
+
+class ChlorinationControlPolicyConstant(ChlorinationControlPolicy):
+    """
+    Constant control policy -- picks a constant control action in every time step.
+    """
+    def __init__(self, env: WaterChlorinationEnv, constant_action: np.ndarray):
+        super().__init__(env)
+        if not isinstance(constant_action, np.ndarray):
+            raise TypeError("'constant_action' must be an instance of 'numpy.ndarray' "+
+                            f"but not of '{type(constant_action)}'")
+        self._constant_action = constant_action
+
+    def compute_action(self, observations: np.ndarray) -> np.ndarray:
+        return self._constant_action
+
+class ChlorinationControlPolicyZero(ChlorinationControlPolicy):
+    """
+    Zero control policy -- picks a zero control action in every time step.
+    """
+    def compute_action(self, observations: np.ndarray) -> np.ndarray:
+        return np.zeros(len(self._gym_action_space.shape))
