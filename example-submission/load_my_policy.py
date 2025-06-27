@@ -1,5 +1,5 @@
 """
-Note that every submission must contains a file "load_my_policy.py" which contains a function
+Note that every submission must contain a file "load_my_policy.py" which contains a function
 load_policy(env: WaterChlorinationEnv) -> ChlorinationControlPolicy for loading and returning the final policy/controller.
 """
 from env import WaterChlorinationEnv
