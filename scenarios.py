@@ -5,6 +5,7 @@ This module contains the scenarios for the
 from epyt_flow.simulation import ScenarioSimulator, ScenarioConfig, ToolkitConstants
 from epyt_control.envs.actions import SpeciesInjectionAction
 
+from config import DATA_DIR
 
 def load_scenario(scenario_id: int) -> dict:
     """
@@ -30,15 +31,15 @@ def load_scenario(scenario_id: int) -> dict:
         raise ValueError(f"Invalid sceanrio ID '{scenario_id}'")
 
     if scenario_id <= 9:
-        f_inp_in = f"CY-DBP_competition_stream_competition_6days_{scenario_id}.inp"
-        f_msx_in = f"AI_challenge6days_{scenario_id}.msx"
-        f_in_contamination_metadata = f"contamination_metadata_6days_{scenario_id}.mat"
-        f_in_streams_data = f"Stream_demands_competition_6days_{scenario_id}.mat"
+        f_inp_in = f"{DATA_DIR}CY-DBP_competition_stream_competition_6days_{scenario_id}.inp"
+        f_msx_in = f"{DATA_DIR}AI_challenge6days_{scenario_id}.msx"
+        f_in_contamination_metadata = f"{DATA_DIR}contamination_metadata_6days_{scenario_id}.mat"
+        f_in_streams_data = f"{DATA_DIR}Stream_demands_competition_6days_{scenario_id}.mat"
     else:
-        f_inp_in = "CY-DBP_competition_stream_competition_365days.inp"
-        f_msx_in = "AI_challenge365days.msx"
-        f_in_contamination_metadata = "contamination_metadata_365days.mat"
-        f_in_streams_data = "Stream_demands_competition_365days.mat"
+        f_inp_in = f"{DATA_DIR}CY-DBP_competition_stream_competition_365days.inp"
+        f_msx_in = f"{DATA_DIR}AI_challenge365days.msx"
+        f_in_contamination_metadata = f"{DATA_DIR}contamination_metadata_365days.mat"
+        f_in_streams_data = f"{DATA_DIR}Stream_demands_competition_365days.mat"
 
     sensor_config = None
     with ScenarioSimulator(f_inp_in=f_inp_in, f_msx_in=f_msx_in) as scenario:
