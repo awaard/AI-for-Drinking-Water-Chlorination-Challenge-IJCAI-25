@@ -4,11 +4,13 @@ This module contains a function for evaluating a given control policy on the eva
 import scipy
 import numpy as np
 from epyt_flow.simulation import SensorConfig
+from stable_baselines3.sac.policies import Actor
+
 from env import WaterChlorinationEnv
 from control_policy import ChlorinationControlPolicy
 
 
-def evaluate(policy: ChlorinationControlPolicy, env: WaterChlorinationEnv) -> dict:
+def evaluate(policy: ChlorinationControlPolicy, env: WaterChlorinationEnv, print_actions = False) -> dict:
     """
     Evaluates a given policy for controlling the chlorine injection pumps in a given environment.
 
@@ -33,8 +35,12 @@ def evaluate(policy: ChlorinationControlPolicy, env: WaterChlorinationEnv) -> di
     actions = []
 
     obs, _ = env.reset()
+    counter = 0
     while True:
         action = policy(obs)
+        if print_actions:
+            print("Step number:", counter)
+            print("Action taken:", action)
         actions.append(action)
 
         obs, _, terminated, _, info = env.step(action)
@@ -46,6 +52,8 @@ def evaluate(policy: ChlorinationControlPolicy, env: WaterChlorinationEnv) -> di
             scada_data = current_scada_data
         else:
             scada_data.concatenate(current_scada_data)
+
+        counter += 1
 
     env.close()
     print("Done with simulation")

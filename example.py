@@ -44,13 +44,47 @@ if __name__ == "__main__":
         ppo_b = None
         our_ppo = None
 
+        print("Simulating random policy...")
         r = evaluate(random_policy, env)
+        print("Simulating constant policy...")
         c = evaluate(constant_policy, env)
+        print("Simulating zero policy...")
         z = evaluate(zero_policy, env)
-        ppo_b = evaluate(baseline_ppo_policy, env)
-        our_ppo = evaluate(our_ppo_policy, env)
+        print("Simulating baseline PPO policy...")
+        ppo_b = evaluate(baseline_ppo_policy, env, print_actions=True)
+        print("Simulating our PPO policy...")
+        our_ppo = evaluate(our_ppo_policy, env, print_actions=True)
+
+        print("\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n")
+
         print(f"Random policy evaluation results: {r}")
         print(f"Constant policy evaluation results: {c}")
         print(f"Zero policy evaluation results: {z}")
         print(f"Baseline PPO policy evaluation results: {ppo_b}")
         print(f"Our PPO policy evaluation results: {our_ppo}")
+
+        # Plot evaluation results
+
+        # Assuming each evaluation returns a dictionary of metrics; if not, treat the value as a single "score"
+        metrics = list(r.keys()) if isinstance(r, dict) else ['score']
+        policy_names = ["Random", "Constant", "Zero", "Baseline PPO", "Our PPO"]
+        results = [r, c, z, ppo_b, our_ppo]
+
+        fig, axes = plt.subplots(len(metrics), 1, figsize=(8, 4 * len(metrics)))
+        if len(metrics) == 1:
+            axes = [axes]
+
+        for i, metric in enumerate(metrics):
+            values = []
+            for result in results:
+                if isinstance(result, dict):
+                    values.append(result.get(metric, 0))
+                else:
+                    values.append(result)
+            axes[i].bar(policy_names, values)
+            axes[i].set_title(f"{metric} Evaluation")
+            axes[i].set_xlabel("Policy")
+            axes[i].set_ylabel(metric)
+
+        plt.tight_layout()
+        plt.show()
